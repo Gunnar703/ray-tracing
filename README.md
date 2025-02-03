@@ -18,6 +18,7 @@ Outputs an ASCII PPM file.
 
 # Example Program Output
 ![](image.png)
+
 `image.png`: converted from `ppm` using nagata-yoshiteru's [pbm-ppm-pgm-viewer-for-vscode](https://github.com/nagata-yoshiteru/pbm-ppm-pgm-viewer-for-vscode).
 
 # References
