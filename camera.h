@@ -31,7 +31,6 @@ class camera {
 
             std::clog << "Rendering...\n";
 
-            // #pragma omp parallel for collapse(2)
             for (int j = 0; j < image_height; j++) {
                 for (int i = 0; i < image_width; i++) {
                     point3 pixel_center = pixel00_loc 
