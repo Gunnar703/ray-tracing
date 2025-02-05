@@ -7,24 +7,29 @@
 
 class hittable_list : public hittable {
     public:
-        std::vector<shared_ptr<hittable>> objects;
+        hittable** objects;
+        int len;
 
-        hittable_list() {}
-        hittable_list(shared_ptr<hittable> object) { add(object); }
-
-        void clear() { objects.clear(); }
-
-        void add(shared_ptr<hittable> object) {
-            objects.push_back(object);
+        hittable_list(int len) : len(len) {
+            CUDA_CHECK(cudaMalloc( (void**)&objects, len * sizeof(hittable*) ));
         }
 
-        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
+        ~hittable_list() {
+            CUDA_CHECK(cudaFree(objects));
+        }
+
+        __device__ hittable*& operator [](int i) {
+            return objects[i];
+        }
+
+        __device__ bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             hit_record temp_rec;
             bool hit_anything = false;
 
             double closest_so_far = ray_t.max;
 
-            for (const auto& object : objects) {
+            for (int i = 0; i < len; i++) {
+                hittable* object = objects[i];
                 if (object->hit(r, interval(ray_t.min, closest_so_far), temp_rec)) {
                     hit_anything = true;
                     closest_so_far = temp_rec.t;

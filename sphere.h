@@ -5,24 +5,24 @@
 
 class sphere : public hittable {
     public:
-        sphere(const point3& center, double radius, shared_ptr<material> mat) 
-            : center(center), radius(std::fmax(0, radius)), mat(mat) {}
+        __host__ __device__ sphere(const point3& center, float radius, material* mat) 
+            : center(center), radius(fmaxf(0, radius)), mat(mat) {}
 
-        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
+        __device__ bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             vec3 oc = center - r.origin();
 
-            double a = r.direction().length_squared();
-            double h = dot(r.direction(), oc);
-            double c = oc.length_squared() - radius*radius;
+            float a = r.direction().length_squared();
+            float h = dot(r.direction(), oc);
+            float c = oc.length_squared() - radius*radius;
 
-            double discriminant = h*h - a*c;
+            float discriminant = h*h - a*c;
             if (discriminant < 0) 
                 return false;
 
-            double sqrtd = std::sqrt(discriminant);
+            float sqrtd = std::sqrt(discriminant);
 
             // Find the nearest root that lies in the acceptable range
-            double root = (h - sqrtd) / a;
+            float root = (h - sqrtd) / a;
             if (!ray_t.surrounds(root)) {
                 root = (h + sqrtd) / a;
                 if (!ray_t.surrounds(root))
@@ -41,8 +41,8 @@ class sphere : public hittable {
     
     private:
         point3 center;
-        double radius;
-        shared_ptr<material> mat;
+        float radius;
+        material* mat;
 };
 
 #endif
