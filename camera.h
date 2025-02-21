@@ -50,6 +50,7 @@ class camera {
                     rgb_int rgb = color_to_rgb_int(pixel_samples_scale * pixel_color);
                     buffer[image_width * j + i] = rgb;
                 }
+                std::cout << "Row: " << j << "/" << image_height << "\n";
             }
 
             std::clog << "Done rendering.\n";   
@@ -121,7 +122,7 @@ class camera {
         }
 
         ray get_ray(int i, int j) const {
-            // Construct a camer ray originating from the defocus disk and directed at randomly sampled
+            // Construct a camera ray originating from the defocus disk and directed at randomly sampled
             // point around the pixel location i, j.
 
             vec3 offset = sample_square();
@@ -131,8 +132,9 @@ class camera {
 
             point3 ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
             vec3 ray_direction = pixel_sample - ray_origin;
+            double ray_time = random_double();
 
-            return ray(ray_origin, ray_direction);
+            return ray(ray_origin, ray_direction, ray_time);
         }
 
         vec3 sample_square() const {
