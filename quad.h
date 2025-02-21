@@ -17,6 +17,8 @@ class quad : public hittable {
             set_bounding_box();
         }
 
+        virtual ~quad() = default;
+
         virtual void set_bounding_box() {
             // Compute the bounding box of all four vertices
             aabb bbox_diagonal1 = aabb(Q, Q + u + v);

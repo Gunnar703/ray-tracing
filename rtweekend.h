@@ -7,7 +7,6 @@
 #include <limits>
 #include <memory>
 
-
 // C++ Std Usings
 
 using std::make_shared;
