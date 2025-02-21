@@ -50,6 +50,7 @@ class sphere : public hittable {
 
             vec3 outward_normal = (rec.p - current_center) / radius;
             rec.set_face_normal(r, outward_normal);
+            get_sphere_uv(outward_normal, rec.u, rec.v);
             rec.mat = mat;
             
             return true;
@@ -62,6 +63,19 @@ class sphere : public hittable {
         double radius;
         shared_ptr<material> mat;
         aabb bbox;
+
+        /*
+        @param p: a given point on the sphere of radius one, centered at the origin
+        @param u: returned value [0,1] of angle around the Y axis from X=-1.
+        @param v: returned value [0,1] of angle from Y=-1 to Y=+1
+        */
+        static void get_sphere_uv(const point3& p, double& u, double& v) {
+            double theta = std::acos(-p.y());
+            double phi   = std::atan2(-p.z(), p.x()) + pi;
+
+            u = phi / (2*pi);
+            v = theta / pi;
+        }
 };
 
 #endif

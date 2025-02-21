@@ -47,5 +47,7 @@ inline int random_int(int min, int max) {
 #include "vec3.h"
 #include "aabb.h"
 #include "bvh.h"
+#include "texture.h"
+#include "perlin.h"
 
 #endif
